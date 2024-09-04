@@ -21,6 +21,14 @@
     animation: fadeIn 0.3s ease-out;
 }
 
+.modal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: .5rem;
+    
+}
+
 .modal-header {
     font-size: 1.5rem;
     font-weight: bold;

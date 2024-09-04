@@ -11,7 +11,7 @@ const RouteApp = () => {
         <BrowserRouter>
             <Layout>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<Login />} />
                     <Route path="/schoolList" element={<PrivateRoute><Home /></PrivateRoute>} />
                     <Route path="/about" element={<About />} />
                     <Route path="*" element={<Navigate to="/page-initial" />} />
@@ -23,11 +23,11 @@ const RouteApp = () => {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const location = useLocation();
-    const showFooter = location.pathname !== '/login';
+    const showFooter = location.pathname !== '/';
 
     return (
         <>
-            {location.pathname !== '/login' && <Navbar />}
+            {location.pathname !== '/' && <Navbar />}
             {children}
             {showFooter && <Footer />}
         </>

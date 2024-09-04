@@ -5,7 +5,7 @@ import './Login.css';
 
 const Login = () => {
     const [ email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
+    const [ senha, setSenha ] = useState('');
     const [ error, setError ] = useState('');
     const navigate = useNavigate()
 
@@ -14,7 +14,7 @@ const Login = () => {
         setError('');
 
         try {
-            await login({ email, password });
+            await login({ email, senha });
             navigate('/schoolList')
         } catch (err) {
             setError('E-mail e/ou senha inválidos.')
@@ -36,8 +36,8 @@ const Login = () => {
                     <div className="input-group">
                         <label htmlFor="password">Senha</label>
                         <input type="password" id="password" placeholder="Digite sua senha" required
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={senha} 
+                        onChange={(e) => setSenha(e.target.value)}
                         />
                     </div>
                     {error && <p className="error"> {error} </p>}

@@ -2,8 +2,8 @@ import api from "./apiSchool";
 
 export const fetchSchools = async () => {
     try {
-        const response = await api.get('escolas');
-        return response.data;
+        const response = await api.get(`api/escolas`);
+        return response.data.data;
     } catch (error) {
         console.error('Erro ao buscar escolas ', error);
         throw error;
@@ -12,7 +12,8 @@ export const fetchSchools = async () => {
 
 export const addSchool = async (schoolData: any) => {
     try {
-        const response = await api.post('/escolas', schoolData);
+        const response = await api.post('api/escolas', schoolData);
+        
         return response.data;
     } catch (error) {
         console.error('Erro ao adicionar escola', error)
