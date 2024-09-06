@@ -92,17 +92,23 @@ const ListSchool = () => {
         }
     };
 
-    const loadCities = async (_stateFilter: number, id: number) => {
+    const loadCities = async (_stateFilter: number) => {
         try {
-            const citiesData: City[] = await fetchCities(id);
+            const citiesData: City[] = await fetchCities(_stateFilter);
             setCities(citiesData.filter(city => city.estado_id === stateFilter));
         } catch (error) {
             setError('Erro ao carregar cidades.');
         }
     };
-    const handleSchoolAdded = () => {
-        loadSchools();
+
+    const handleSchoolAdded = async () => {
+        await loadSchools();
     };
+
+    const handleSchoolUpdated = async () => {
+        await loadSchools();
+    };
+
     useEffect(() => {
         loadStates();
         loadSchools();
@@ -110,7 +116,7 @@ const ListSchool = () => {
 
     useEffect(() => {
         if (stateFilter) {
-            loadCities(stateFilter, 22);
+            loadCities(stateFilter);
         } else {
             setCities([]);
             setCityFilter('');
@@ -174,16 +180,29 @@ const ListSchool = () => {
                             </div>
                             <button 
                                 className="details-button" 
-                                onClick={() => openDetailsModal(school)}>Ver detalhes</button>
+                                onClick={() => openDetailsModal(school)}>Ver detalhes
+                            </button>
                         </li>
                     )) : <p>Não tem escola cadastrada</p>}
                 </ul>
             </div>
-            <SchoolModal isOpen={isModalOpen} onClose={() => {
-                closeModal();
-                handleSchoolAdded();
-            }} />
-            <DetailsModal isOpen={isDetailsModalOpen} onClose={closeDetailsModal} school={selectedSchool} />
+            <SchoolModal 
+                isOpen={isModalOpen} 
+                onClose={() => {
+                    closeModal();
+                    handleSchoolAdded();
+                }} 
+                onSchoolAdded={handleSchoolAdded}
+            />
+            <DetailsModal 
+                isOpen={isDetailsModalOpen} 
+                onClose={() => {
+                    closeDetailsModal();
+                    handleSchoolUpdated(); 
+                }} 
+                school={selectedSchool} 
+                onSchoolUpdated={handleSchoolUpdated}
+            />
         </div>
     );
 }

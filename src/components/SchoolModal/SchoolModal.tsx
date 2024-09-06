@@ -7,6 +7,7 @@ import './SchooModal.css';
 interface SchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSchoolAdded: () => void;
 }
 
 interface State {
@@ -22,7 +23,7 @@ interface City {
     estado: string[]
 }
 
-const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
+const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose,onSchoolAdded }) => {
     if (!isOpen) return null;
 
     const [nome, setNome] = useState('');
@@ -87,6 +88,7 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
             await addSchool(newSchool);
             onClose();
             handleSchoolAdded();
+            onSchoolAdded();
         } catch (error) {
             setError('Erro ao adicionar escola, Tente novamente');
         }
@@ -166,7 +168,6 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
                                 <label htmlFor='integral'>Integral</label>
                                 <input id='integral' type="checkbox" value="I" checked={turnos.includes('I')} onChange={() => handleShiftChange('I')} />
                             </div>
-
                         </div>
                     </div>
                     <div className="form-actions">
