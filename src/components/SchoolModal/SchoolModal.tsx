@@ -84,8 +84,7 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
         };
 
         try {
-            const response = await addSchool(newSchool);
-            console.log(response)
+            await addSchool(newSchool);
             onClose();
             handleSchoolAdded();
         } catch (error) {
