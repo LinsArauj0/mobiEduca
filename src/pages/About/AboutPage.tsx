@@ -1,5 +1,5 @@
 import React from 'react';
-import './About.css'; // Importe o arquivo CSS
+import './About.css';
 
 const About: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const About: React.FC = () => {
       <section className="about-section">
         <h2>Sobre o Desenvolvedor</h2>
         <p>
-          Sou Érick Lima, um desenvolvedor apaixonado por tecnologia e inovação. Com uma sólida formação em [Sua Formação] e experiência em [Área de Experiência], decidi criar este projeto para [Objetivo do Projeto]. Minha trajetória inclui [Breve Descrição de Experiências Relevantes] e, ao longo dos anos, desenvolvi habilidades em várias tecnologias que utilizei neste projeto.
+          Sou Érick Lima, um desenvolvedor apaixonado por tecnologia e inovação. Tenho 28 anos e estou cursando Análise e Desenvolvimento de Sistemas. Minha experiência inclui projetos pessoais e acadêmicos, e estou em busca de uma oportunidade no mercado de trabalho como desenvolvedor front-end. Tenho afinidade com tecnologias como ReactJS, React Native, VueJS, além de HTML, CSS e JavaScript.
         </p>
       </section>
       <section className="about-section">
@@ -20,6 +20,7 @@ const About: React.FC = () => {
           <li><strong>React:</strong> Biblioteca para construção de interfaces interativas.</li>
           <li><strong>TypeScript:</strong> Adiciona tipagem estática ao JavaScript para maior segurança e previsibilidade.</li>
           <li><strong>CSS:</strong> Estilização da interface com foco na responsividade e na experiência do usuário.</li>
+          <li><strong>ShadCn:</strong> Biblioteca utilizada, especialmente para o componente de diálogo, aprimorando a funcionalidade do modal.</li>
           <li><strong>Axios:</strong> Biblioteca para realizar requisições HTTP e manipulação de dados.</li>
         </ul>
       </section>

@@ -140,7 +140,7 @@ const ListSchool = () => {
                 <div className="search-filter">
                     <input
                         type="text"
-                        placeholder="Pesquisar por nome"
+                        placeholder="Pesquisar escola"
                         className="search-input"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
