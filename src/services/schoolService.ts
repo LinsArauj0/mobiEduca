@@ -13,8 +13,7 @@ export const fetchSchools = async () => {
 export const addSchool = async (schoolData: any) => {
     try {
         const response = await api.post('api/escolas', schoolData);
-        
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error('Erro ao adicionar escola', error)
         throw error;

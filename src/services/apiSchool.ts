@@ -4,7 +4,7 @@ const api = axios.create({
     baseURL: 'https://apiteste.mobieduca.me/',
     timeout: 10000,
     headers: {
-        'Content-Length' : 'application/json'
+        'Content-Type' : 'application/json'
     }
 })
 

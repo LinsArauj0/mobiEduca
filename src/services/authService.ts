@@ -14,10 +14,9 @@ export const login = async (credentials: any) => {
     }
 }
 
-// função para verificar se o usuário está autenticado
 export const isAuthenticated = () => {
     const token = localStorage.getItem('authToken')
-    return !!token; // retorna verdadeiro se houver token
+    return !!token; 
 }
 
 export const logout = () => {

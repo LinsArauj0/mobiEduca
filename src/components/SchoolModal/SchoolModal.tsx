@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addSchool } from '@/services/schoolService';
+import { fetchCities } from '@/services/cityService';
+import { fetchStates } from '@/services/stateService';
 import './SchooModal.css';
 
 interface SchoolModalProps {
@@ -7,15 +9,31 @@ interface SchoolModalProps {
     onClose: () => void;
 }
 
+interface State {
+    id: number,
+    sigla: string,
+    descricao: string
+}
+
+interface City {
+    id: number,
+    estado_id: number,
+    descricao: string,
+    estado: string[]
+}
+
 const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     const [nome, setNome] = useState('');
     const [cidade_id, setCidadeId] = useState<number | null>(null);
+    const [cidades, setCidades] = useState<City[]>([]);
+    const [estados, setEstados] = useState<State[]>([]);
+    const [estadoSelecionado, setEstadoSelecionado] = useState<number | null>(null);
     const [diretor, setDiretor] = useState('');
-    const [localizacao, setLocalizacao] = useState<string>('');
+    const [localizacao, setLocalizacao] = useState<number | null>(null);
     const [turnos, setTurnos] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const [, setError] = useState<string | null>(null);
 
     const handleShiftChange = (turno: string) => {
         setTurnos((prevShifts) =>
@@ -25,13 +43,50 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
         );
     };
 
+    useEffect(() => {
+        const loadStates = async () => {
+
+            try {
+                const statesData: State[] = await fetchStates();
+                setEstados(statesData);
+            } catch (error) {
+                console.error("Erro ao carregar estados.", error)
+            }
+        }
+        loadStates();
+    }, [])
+
+    useEffect(() => {
+        if (estadoSelecionado) {
+            const loadCity = async () => {
+                try {
+                    const cityData: City[] = await fetchCities(estadoSelecionado);
+                    setCidades(cityData);
+                } catch (error) {
+                    console.error("Erro ao carregar cidades.", error);
+                }
+            }
+            loadCity();
+        } else {
+            setCidades([]);
+        }
+    }, [estadoSelecionado]);
+
     const handlerSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        const newSchool = { nome, cidade_id, diretor, localizacao, turnos };
+
+        const newSchool = {
+            nome,
+            cidade_id,
+            diretor,
+            localizacao,
+            turnos,
+        };
 
         try {
-            await addSchool(newSchool);
+            const response = await addSchool(newSchool);
             onClose();
+            handleSchoolAdded();
         } catch (error) {
             setError('Erro ao adicionar escola, Tente novamente');
         }
@@ -58,29 +113,60 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
                         />
                     </div>
                     <div className="form-group">
+                        <label>Estado</label>
+                        <select required
+                            onChange={(e) => setEstadoSelecionado(Number(e.target.value))}
+                        >
+                            <option value="">Escolha uma opção</option>
+                            {estados && estados.map((state) => (
+                                <option key={state.id} value={state.id}>{state.descricao}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
                         <label>Cidade</label>
-                        <input type="text" required
-                            value={cidade_id || ''}
+                        <select required
+                            value={cidade_id || ""}
                             onChange={(e) => setCidadeId(Number(e.target.value))}
-                        />
+                            disabled={!estadoSelecionado}
+                        >
+                            <option value="">Escolha uma opção</option>
+                            {cidades.map((city) => (
+                                <option key={city.id} value={city.id}>{city.descricao}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>Localização da Escola</label>
                         <select required
-                            value={localizacao}
-                            onChange={(e) => setLocalizacao(e.target.value)}
+                            value={localizacao || ""}
+                            onChange={(e) => setLocalizacao(Number(e.target.value))}
                         >
-                            <option value="Urbana">Urbana</option>
-                            <option value="Rural">Rural</option>
+                            <option value="opcoes">Escolha uma opção</option>
+                            <option value="1">Urbana</option>
+                            <option value="2">Rural</option>
                         </select>
                     </div>
                     <div className="form-group">
                         <label>Turnos</label>
                         <div className="checkbox-group">
-                            <label><input type="checkbox" value="Manha" checked={turnos.includes('M')} onChange={() => handleShiftChange('M')} /> Manhã</label>
-                            <label><input type="checkbox" value="Tarde" checked={turnos.includes('T')} onChange={() => handleShiftChange('T')} /> Tarde</label>
-                            <label><input type="checkbox" value="Noite" checked={turnos.includes('N')} onChange={() => handleShiftChange('N')} /> Noite</label>
-                            <label><input type="checkbox" value="Integral" checked={turnos.includes('I')} onChange={() => handleShiftChange('I')} /> Integral</label>
+                            <div>
+                                <label htmlFor='manha'>Manhã</label>
+                                <input id="manha" type="checkbox" value="M" checked={turnos.includes('M')} onChange={() => handleShiftChange('M')} />
+                            </div>
+                            <div>
+                                <label htmlFor='tarde'>Tarde</label>
+                                <input id="tarde" type="checkbox" value="T" checked={turnos.includes('T')} onChange={() => handleShiftChange('T')} />
+                            </div>
+                            <div>
+                                <label htmlFor='noite'>Noite</label>
+                                <input id='noite' type="checkbox" value="N" checked={turnos.includes('N')} onChange={() => handleShiftChange('N')} />
+                            </div>
+                            <div>
+                                <label htmlFor='integral'>Integral</label>
+                                <input id='integral' type="checkbox" value="I" checked={turnos.includes('I')} onChange={() => handleShiftChange('I')} />
+                            </div>
+
                         </div>
                     </div>
                     <div className="form-actions">
@@ -94,3 +180,7 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose }) => {
 };
 
 export { SchoolModal };
+
+function handleSchoolAdded() {
+    throw new Error('Function not implemented.');
+}
