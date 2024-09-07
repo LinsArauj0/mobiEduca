@@ -4,7 +4,7 @@ import { fetchSchoolDetails, updateSchool } from "@/services/schoolService";
 import { fetchStates } from "@/services/stateService";
 import { fetchCities } from "@/services/cityService";
 import { Button } from "../ui/button";
-import './EditSchoolModal.css'; // Certifique-se de importar o arquivo CSS
+import './EditSchoolModal.css';
 
 interface EditSchoolModalProps {
     id: number;
@@ -12,14 +12,14 @@ interface EditSchoolModalProps {
     onUpdate: () => void;
 }
 
-export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({ id, onClose, onUpdate }) => {
+const EditSchoolModal: React.FC<EditSchoolModalProps> = ({ id, onClose, onUpdate }) => {
     const [schoolData, setSchoolData] = useState({
         nome: '',
         diretor: '',
         cidade_id: '',
-        estado: '',  // Armazenando o ID do estado, que é numérico
+        estado: '', 
         localizacao: '',
-        turnos: [] as string[] // Lista de turnos selecionados
+        turnos: [] as string[]
     });
 
     const [states, setStates] = useState<{ id: number, descricao: string }[]>([]);
@@ -32,7 +32,6 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({ id, onClose, o
     ]);
     const [loading, setLoading] = useState(false);
 
-    // Carrega os detalhes da escola e estados quando o modal é aberto
     useEffect(() => {
         const loadSchoolDetails = async () => {
             try {
@@ -177,6 +176,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({ id, onClose, o
                         <div className="checkbox-group">
                             {availableTurns.map(turno => (
                                 <div key={turno.value}>
+                                    <label htmlFor={turno.value}>{turno.label}</label>
                                     <input
                                         type="checkbox"
                                         id={turno.value}
@@ -185,7 +185,6 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({ id, onClose, o
                                         checked={schoolData.turnos.includes(turno.value)}
                                         onChange={() => handleTurnoChange(turno.value)}
                                     />
-                                    <label htmlFor={turno.value}>{turno.label}</label>
                                 </div>
                             ))}
                         </div>
@@ -204,3 +203,4 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({ id, onClose, o
         </Dialog>
     );
 };
+export { EditSchoolModal }

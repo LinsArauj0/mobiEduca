@@ -86,9 +86,8 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose,onSchoolAdded
 
         try {
             await addSchool(newSchool);
-            onClose();
-            handleSchoolAdded();
             onSchoolAdded();
+            onClose();  
         } catch (error) {
             setError('Erro ao adicionar escola, Tente novamente');
         }
@@ -181,7 +180,3 @@ const SchoolModal: React.FC<SchoolModalProps> = ({ isOpen, onClose,onSchoolAdded
 };
 
 export { SchoolModal };
-
-function handleSchoolAdded() {
-    throw new Error('Function not implemented.');
-}

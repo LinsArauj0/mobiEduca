@@ -7,16 +7,20 @@ export const login = async (credentials: any) => {
 
         localStorage.setItem('authToken', token);
 
-        return response.data;
+        if (response && response.status) {
+            return response.data;
+        } else {
+            throw new Error('Resposta da API inválida');
+        }
     } catch (error) {
-        console.error('Erro ao fazer login', error)
+        console.error('Erro ao fazer login:', error);
         throw error;
     }
 }
 
 export const isAuthenticated = () => {
     const token = localStorage.getItem('authToken')
-    return !!token; 
+    return !!token;
 }
 
 export const logout = () => {
